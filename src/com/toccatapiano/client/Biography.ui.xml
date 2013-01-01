@@ -1,0 +1,37 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.content {
+		}
+		
+	</ui:style>
+	<g:HTMLPanel addStyleNames="tc-Content">
+		<p>Erika Ray began her musical studies with the violin and switched to
+			the piano at age 11. Between 11 and 14 Erika worked as an
+			accompanist, composed the score to the school musical, and was
+			awarded the National Level rating in the Piano Guild. Erika was a
+			featured performer at the Heidelberg Music Festival in 1999. After
+			working as an accompanist and piano teacher in Colorado Springs,
+			Erika relocated to Denver to continue her musical studies.</p>
+
+		<p> Tamara Goldstein. Erika is involved in solo piano, chamber music,
+			and accompanying. Her upcoming recital in May 2013 will feature left
+			hand piano repertoire and a world premiere left hand piece. </p>
+
+		<p> Erika is the lead accompanist at St. Mary's Catholic Church in
+			Littleton, Colorado under the direction of Dr. Marcia Marchesi. She
+			also is active in local performances including opera and music
+			theater. Erika is very excited to be working with local performance
+			groups, and if you are in need of an accompanist, please contact for
+			rates.</p>
+
+		<p> Erika loves teaching and sharing music with her students. Her
+			teaching style is friendly and patient and she strives to help each
+			of her students find their own musical voice. Erika is experienced
+			working with both children and adults, and caters each lesson to help
+			each student achieve their goals.
+			Her private teaching studio recently celebrated its two year anniversary
+			with a recital full of happy students!</p>
+	</g:HTMLPanel>
+</ui:UiBinder> 

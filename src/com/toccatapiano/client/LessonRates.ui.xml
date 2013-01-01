@@ -1,0 +1,36 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+	</ui:style>
+	<g:HTMLPanel addStyleNames="tc-Content">
+	<p>
+		My teaching philosophy states that everyone is born with musical
+		ability. I believe that every person can learn to play the piano and
+		express themselves through music. Music is an all encompassing field
+		and I teach my students note reading, improvisation, composition,
+		music history and theory. As a member of two national music teaching
+		organizations, NFMC and MTNA, I stay current on teaching methods and
+		have many performance opportunities available to my students.</p>
+		<p>
+		Lesson Rates:<ul>
+		<li>30 minutes - $20</li>
+		<li>45 minutes - $25</li>
+		<li>60 minutes - $35</li>
+		</ul>
+		</p>
+
+<p>
+		Rates include library materials and participation in studio recitals.</p>
+		<p>
+		There are currently openings for new students for early afternoon. Some
+		daytime hours are also available, perfect for those who work evenings,
+		homeschoolers, or kindergarten.
+		</p>
+		<p>
+		Accompanying and Performance rates are based on the repertoire, number of
+		rehearsals, travel time, and performance venue. Please contact me for
+		scheduling information and a repertoire list.
+		</p>
+	</g:HTMLPanel>
+</ui:UiBinder> 

@@ -1,0 +1,18 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	<ui:style>
+	</ui:style>
+		<g:HTML addStyleNames="tc-Content">
+			<p>
+				My name is Erika Ray, welcome to the Toccata Piano Studio website
+				and
+				thank you for visiting. I am an Aurora, Colorado area piano
+				teacher
+				and accompanist. Please visit the <a href="#Biography">Biography</a> page to find more
+				information about myself. The <a href="#Lessons/Rates">Lessons</a> page will bring you to my
+				teaching philosophy and pricing. If you are interested in piano
+				accompanying, please <a href="#Contact">contact</a> me for further information.
+			</p>
+		</g:HTML>
+</ui:UiBinder>

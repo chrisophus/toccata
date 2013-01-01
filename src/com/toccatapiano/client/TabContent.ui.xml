@@ -1,0 +1,37 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.important {
+			font-weight: bold;
+		}
+.outer {
+	width: 850px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+	color: white;
+}
+
+.inner {
+	margin-top: 20px;
+	background-image: url("../main.png");
+	background-repeat:no-repeat;
+	width: 800;
+	height: 600px;
+	border: 5px solid white;
+	text-width: 50%;
+}
+.tabPadding {
+	margin: 10px 1px 1px 1px;
+}
+	</ui:style>
+	<g:SimpleLayoutPanel addStyleNames="{style.outer}">
+
+		<g:SimpleLayoutPanel addStyleNames="{style.inner}">
+		<g:TabLayoutPanel ui:field="tabPanel" barHeight="20" addStyleNames="{style.tabPadding}"></g:TabLayoutPanel>
+		</g:SimpleLayoutPanel>
+
+
+	</g:SimpleLayoutPanel>
+</ui:UiBinder> 
