@@ -4,9 +4,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface CalendarEventServiceAsync
 {
-   void addEvent( CalendarEvent event, AsyncCallback<Void> callback );
+   void addEvent( CalendarEventDTO event, AsyncCallback<Void> callback );
 
-   void getEvents( AsyncCallback<CalendarEvent[]> callback );
+   void getEvents( AsyncCallback<CalendarEventDTO[]> callback );
 
-   void removeEvent( CalendarEvent event, AsyncCallback<Void> callback );
+   void removeEvent( CalendarEventDTO event, AsyncCallback<Void> callback );
 }

@@ -16,9 +16,6 @@ import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickHandler;
 import com.bradrydzewski.gwt.calendar.client.event.UpdateEvent;
 import com.bradrydzewski.gwt.calendar.client.event.UpdateHandler;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
@@ -26,11 +23,6 @@ import com.google.gwt.event.logical.shared.ShowRangeEvent;
 import com.google.gwt.event.logical.shared.ShowRangeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -38,6 +30,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
@@ -46,10 +39,9 @@ import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DatePicker;
-import com.google.gwt.widget.client.TextButton;
 
 public class CalendarView extends Composite implements
-      ValueChangeHandler<Date>, ShowRangeHandler<Date>
+      ValueChangeHandler<Date>, ShowRangeHandler<Date>, AsyncCallback<Void>
 {
 
    private static CalendarUiBinder uiBinder = GWT
@@ -75,9 +67,8 @@ public class CalendarView extends Composite implements
 
    private static final DateTimeFormat timeFormat = DateTimeFormat
          .getFormat(DateTimeFormat.PredefinedFormat.TIME_SHORT);
-   private final Map<String, EventData> eventMap = new HashMap<String, EventData>();
+   private final Map<String, CalendarEventDTO> eventMap = new HashMap<String, CalendarEventDTO>();
    private Date currentDate = new Date();
-   private TextButton currentMonth = new TextButton();
    private static final DateTimeFormat format = DateTimeFormat
          .getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_SHORT);
 
@@ -85,6 +76,11 @@ public class CalendarView extends Composite implements
    private DateTimeFormat monthFormat = DateTimeFormat.getFormat("MMMM");
 
    final DecoratedPopupPanel datePickerPopup = new DecoratedPopupPanel(true);
+
+   private String user = "toccatapiano@gmail.com";
+
+   private CalendarEventServiceAsync service = GWT
+         .create(CalendarEventService.class);
 
    private void showMonthView()
    {
@@ -258,84 +254,43 @@ public class CalendarView extends Composite implements
 
    private void loadAppointments()
    {
-      String url = GWT.getModuleBaseURL() + "../appointments.json";
-      // Send request to server and catch any errors.
-      RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+      service.getEvents(new AsyncCallback<CalendarEventDTO[]>() {
 
-      try
-      {
-         builder.sendRequest(null, new RequestCallback() {
-            public void onError( Request request, Throwable exception )
-            {
-               displayError("Couldn't retrieve event data.");
-            }
+         @Override
+         public void onSuccess( CalendarEventDTO[] result )
+         {
+            updateAppointments(result);
+            displayError("loaded events: " + result.length);
+         }
 
-            public void onResponseReceived( Request request, Response response )
-            {
-               if (Response.SC_OK == response.getStatusCode())
-               {
-                  updateAppointments(asArrayOfEvents(response.getText()));
-               }
-               else
-               {
-                  displayError("Couldn't retrieve events.");
-               }
-            }
-         });
-      }
-      catch (RequestException e)
-      {
-         displayError("Couldn't retrieve JSON");
-      }
+         @Override
+         public void onFailure( Throwable caught )
+         {
+            displayError("Couldn't retrieve event data.");
+         }
+      });
    }
 
-   private void updateAppointments( JsArray<EventData> events )
+   private void updateAppointments( CalendarEventDTO[] events )
    {
-      for (int i = 0; i < events.length(); i++)
+      for (int i = 0; i < events.length; i++)
       {
-         calendar.addAppointment(events.get(i).getAppointment());
+         CalendarEventDTO event = events[i];
+         calendar.addAppointment(getAppointment(event));
       }
    }
 
-   private static class EventData extends JavaScriptObject
+   private Appointment getAppointment( CalendarEventDTO event )
    {
-      protected EventData()
-      {
-      }
+      Appointment appt = new Appointment();
+      appt.setStart(event.getStartDate());
+      appt.setEnd(event.getEndDate());
+      appt.setTitle(event.getTitle());
+      appt.setDescription(event.getDetails());
+      appt.setStyle(AppointmentStyle.BLUE);
 
-      public final native String getStartDate() /*-{
-			return this.startdate;
-      }-*/;
-
-      public final native String getEndDate() /*-{
-			return this.enddate;
-      }-*/;
-
-      public final native String getTitle() /*-{
-			return this.title;
-      }-*/;
-
-      public final native String getDescription() /*-{
-			return this.description;
-      }-*/;
-
-      // Non-JSNI method to return change percentage. // (4)
-      public final Appointment getAppointment()
-      {
-         Appointment appt = new Appointment();
-         appt.setStart(format.parse(getStartDate()));
-         appt.setEnd(format.parse(getEndDate()));
-         appt.setTitle(getTitle());
-         appt.setDescription(getDescription());
-         appt.setStyle(AppointmentStyle.BLUE);
-
-         return appt;
-      }
+      return appt;
    }
-
-   private final native JsArray<EventData> asArrayOfEvents( String json ) /*-{
-		return eval(json);
-   }-*/;
 
    private void displayError( String string )
    {
@@ -373,5 +328,18 @@ public class CalendarView extends Composite implements
    {
       showMonthView();
       updateDate(datePicker.getCurrentMonth());
+   }
+
+   @Override
+   public void onFailure( Throwable caught )
+   {
+      // TODO Auto-generated method stub
+
+   }
+
+   @Override
+   public void onSuccess( Void result )
+   {
+      displayError("created event");
    }
 }

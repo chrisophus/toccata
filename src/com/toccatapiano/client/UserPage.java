@@ -38,7 +38,6 @@ public class UserPage extends Composite
 
    public void show()
    {
-      Window.alert("here");
       // Check login status using login service.
       LoginServiceAsync loginService = GWT.create(LoginService.class);
       loginService.login(GWT.getModuleBaseURL(),
@@ -62,12 +61,15 @@ public class UserPage extends Composite
                }
 
             });
-      Window.alert("here");
    }
 
    private void loadUserData()
    {
       Window.alert("Logged in as: " + loginInfo.getEmailAddress());
+      signInLink.setHref(loginInfo.getLogoutUrl());
+      loginPanel.add(loginLabel);
+      loginPanel.add(signInLink);
+      panel.add(loginPanel);
    }
 
    private void loadLogin()

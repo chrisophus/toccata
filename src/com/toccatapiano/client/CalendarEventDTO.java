@@ -1,38 +1,27 @@
-package com.toccatapiano.server;
+package com.toccatapiano.client;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-import com.google.appengine.api.users.User;
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class EventDataObject
+public class CalendarEventDTO implements Serializable
 {
 
-   @PrimaryKey
-   @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
    private Long id;
-   @Persistent
    private String user;
-   @Persistent
    private Date startDate;
-   @Persistent
    private Date endDate;
-   @Persistent
-   private Date createDate;
-   @Persistent
    String title;
-   @Persistent
    String details;
 
-   public EventDataObject(Long id, String user, Date startDate, Date endDate,
+   public CalendarEventDTO(String user, Date startDate, Date endDate,
          String title, String details)
    {
       super();
-      this.id = id;
       this.user = user;
       this.startDate = startDate;
       this.endDate = endDate;
@@ -100,13 +89,9 @@ public class EventDataObject
       this.details = details;
    }
 
-   public Date getCreateDate()
+   public CalendarEventDTO()
    {
-      return createDate;
-   }
-
-   public EventDataObject()
-   {
-      this.createDate = new Date();
+      super();
+      // TODO Auto-generated constructor stub
    }
 }
