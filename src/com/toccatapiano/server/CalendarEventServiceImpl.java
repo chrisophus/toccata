@@ -30,9 +30,11 @@ public class CalendarEventServiceImpl extends RemoteServiceServlet implements
    private static final PersistenceManagerFactory PMF = JDOHelper
          .getPersistenceManagerFactory("transactions-optional");
 
+   private final String admin = "toccatapiano@gmail.com";
+
    private void checkLoggedIn() throws NotLoggedInException
    {
-      if (getUser() == null) { throw new NotLoggedInException("Not logged in."); }
+      if (getUser() == null || getUser().getEmail() != admin) { throw new NotLoggedInException("Not logged in."); }
    }
 
    private User getUser()
@@ -105,16 +107,13 @@ public class CalendarEventServiceImpl extends RemoteServiceServlet implements
    @Override
    public CalendarEventDTO[] getEvents() throws NotLoggedInException
    {
-      checkLoggedIn();
       PersistenceManager pm = getPersistenceManager();
       List<CalendarEventDTO> eventList = new ArrayList<CalendarEventDTO>();
       try
       {
-         Query q = pm.newQuery(CalendarEvent.class, "user == u");
-         q.declareParameters("java.lang.String u");
+         Query q = pm.newQuery(CalendarEvent.class);
          q.setOrdering("startDate");
-         List<CalendarEvent> events = (List<CalendarEvent>) q.execute(getUser()
-               .getEmail());
+         List<CalendarEvent> events = (List<CalendarEvent>) q.execute();
          for (CalendarEvent event : events)
          {
             eventList.add(new CalendarEventDTO(event.getUser(), new Date(event
@@ -125,6 +124,10 @@ public class CalendarEventServiceImpl extends RemoteServiceServlet implements
       finally
       {
          pm.close();
+      }
+      if (eventList.isEmpty())
+      {
+         addEvent(new CalendarEventDTO(getUser().getEmail(), new Date(), new Date(), "test", "test"));
       }
       return (CalendarEventDTO[]) eventList.toArray(new CalendarEventDTO[0]);
    }
